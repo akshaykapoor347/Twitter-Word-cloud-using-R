@@ -1,0 +1,52 @@
+---
+title: "Twitter wordcloud"
+author: "Akshay"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Installing the libraries
+```{r}
+library(twitteR)
+library(tm)
+library(wordcloud)
+library(RColorBrewer)
+library(e1071)
+library(class)
+```
+
+##Enter these values from your twitter api
+ckey <- 	''
+skey <- 	''
+
+token <- ''
+sectoken <- '' 
+
+
+```{r}
+
+
+setup_twitter_oauth(ckey,skey,token,sectoken)
+
+word.tweets <- searchTwitter('akshay', n = 1000, lang = 'en')
+
+word.text <- sapply(word.tweets, function(x) x$getText())
+
+word.text <- iconv(word.text, 'UTF-8', 'ASCII')
+
+word.corpus <- Corpus(VectorSource(word.text))
+
+term.doc.matric <- TermDocumentMatrix(word.corpus, control = list(removePunctuation = T, stopwords = c('Kumar','https', stopwords('english')), removeNumbers= T, tolower = T))
+
+term.doc.matric <- as.matrix((term.doc.matric))
+
+word.freq <- sort(rowSums(term.doc.matric), decreasing = T)
+
+dm <- data.frame(word = names(word.freq), freq = word.freq)
+
+wordcloud(dm$word, dm$freq, random.order = F, colors = brewer.pal(8,'Dark2'))
+
+```
