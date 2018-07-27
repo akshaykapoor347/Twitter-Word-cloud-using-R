@@ -18,7 +18,7 @@ library(e1071)
 library(class)
 ```
 
-##Enter these values from your twitter api
+##Enter these values from your twitter api for security reasons I cannot share it
 ckey <- 	''
 skey <- 	''
 
